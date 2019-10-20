@@ -11,15 +11,12 @@
 |
 */
 
-use Illuminate\Routing\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
-
-//----------------Posts-----------------------------------
-//Route::get('/p/create','Post')
+Route::get('/p/create','PostController@create');
 
 Route::get('/profile/{user}', 'ProfileController@index')->name('home');
