@@ -37,6 +37,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+
+    // Automatically create default profile's title once new user has been created
     protected static function boot()
     {
         parent::boot();
@@ -51,5 +53,10 @@ class User extends Authenticatable
     public function profile()
     {
         return $this->hasOne(profile::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
     }
 }
