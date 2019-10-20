@@ -17,6 +17,13 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/p/create','PostController@create');
 
+//------------------post------------------------
+Route::get('/p/create','PostController@create');
+Route::post('/p','PostController@store');
+Route::get('/p/{post}','PostController@show');
+
+//-----------------profile-----------------
 Route::get('/profile/{user}', 'ProfileController@index')->name('home');
+Route::get('/profile/{user}/edit', 'ProfileController@edit');
+Route::patch('/profile/{user}', 'ProfileController@update');
