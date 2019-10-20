@@ -11,18 +11,24 @@ class ProfileController extends Controller
 
     public function index(User $user)
     {
+
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
         return view('profile.index',[
-            'user' => $user
+            'user' => $user,
+            'follows' => $follows
         ]);
     }
 
     public function edit(User $user)
     {
+        $this->authorize('update',$user->profile);
         return view('profile.edit',compact('user'));
     }
 
     public function update(User $user)
     {
+
+        $this->authorize('update',$user->profile);
         $data = request()->validate([
             'title' => '',
             'description' => '',
@@ -30,11 +36,16 @@ class ProfileController extends Controller
             'image' => ''
         ]);
 
-        $imagePath = request('image')->store('uploads','public');
-        $image = Image::make(public_path("storage/{$imagePath}"))->fit(200,200);
-        $image->save();
+        if(request('image')) {
+            $imagePath = request('image')->store('profiles', 'public');
+            $image = Image::make(public_path("storage/{$imagePath}"))->fit(200, 200);
+            $image->save();
+            $data['image'] = $imagePath;
+        }
 
-        $user->profile->update($data);
+
+
+        auth()->user()->profile->update($data);
         return redirect("/profile/{$user->id}");
     }
 }

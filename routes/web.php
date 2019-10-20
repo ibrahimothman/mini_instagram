@@ -12,6 +12,7 @@
 */
 
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -27,3 +28,6 @@ Route::get('/p/{post}','PostController@show');
 Route::get('/profile/{user}', 'ProfileController@index')->name('home');
 Route::get('/profile/{user}/edit', 'ProfileController@edit');
 Route::patch('/profile/{user}', 'ProfileController@update');
+
+//----------------follow--------------
+Route::post('/follow/{user}', 'FollowsController@store');
