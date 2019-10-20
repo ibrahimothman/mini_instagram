@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
@@ -12,6 +13,15 @@ class PostController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function index()
+    {
+        // get users who auth user is following
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+        $posts = Post::wherein('user_id',$users)->get();
+        return view('post.index',compact('posts'));
+
     }
 
     public function create()
